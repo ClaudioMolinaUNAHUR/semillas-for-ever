@@ -14,7 +14,7 @@ class Parcela(var ancho: Int, var largo: Int, var horasDeSol: Int, var listPlant
             agregarPlanta(unaPlanta)
         }
         else{
-            throw Exception("Se supero la cantidad de Plantas o le falta Sol")
+           throw Exception("Se supero la cantidad de Plantas o le falta Sol")
         }
     }
 }

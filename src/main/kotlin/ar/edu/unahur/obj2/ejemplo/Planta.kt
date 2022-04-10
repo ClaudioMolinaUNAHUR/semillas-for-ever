@@ -18,16 +18,15 @@ open class Menta(anioSemilla: Int, altura: Double) : Planta(anioSemilla, altura)
 
 open class Soja(anioSemilla: Int, altura: Double) : Planta(anioSemilla,altura){
     override fun horasDeSolTolera(): Int { // SIN RETURN CON "=" HAY QUE DECLARAR TIPO
-        return (if (altura > 0.5) {6}
-                else if (altura in 0.5..1.0){8}
+        return (if (altura < 0.5) {6}
+                else if (altura in 0.5..1.0){8} // probe (0.5).rangeTo(1.0)
                 else {12})
     }
     override fun condAlternativa() = anioSemilla < 2007 && altura in 0.75..0.9
     override fun espacio() = altura/2 // CON RETURN CON "=" NO HACE FALTA DECLARAR TIPO
 }
 
-abstract class Quinoa(anioSemilla: Int, altura: Double): Planta(anioSemilla,altura){
-    abstract var espacio: Double
+class Quinoa(anioSemilla: Int, altura: Double,var espacio: Double): Planta(anioSemilla,altura){
     override fun horasDeSolTolera(): Int {
         return (if(espacio() < 0.3){
                     10
