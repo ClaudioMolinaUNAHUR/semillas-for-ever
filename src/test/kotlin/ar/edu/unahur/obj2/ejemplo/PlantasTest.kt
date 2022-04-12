@@ -10,8 +10,7 @@ import org.junit.jupiter.api.assertThrows
 import ar.edu.unahur.obj2.ejemplo.Quinoa as Quinoa1
 
 class PlantasTest: DescribeSpec( {
-    //ETAPA 1
-    // hay clase Planta que tiene por atributos: año Semilla, altura
+   
     describe(name="Creacion de mentas") {
         // altura, año
         val menta = Menta(2021, 1.0)
@@ -57,7 +56,7 @@ class PlantasTest: DescribeSpec( {
     }
 
 
-    //ETAPA 2
+
     describe("creacion de soja trangenica y peperina"){
         val transgenica = SojaTrangenica(2009,0.6)
         val peperina = Peperina(2021, 1.0)
@@ -69,7 +68,7 @@ class PlantasTest: DescribeSpec( {
             peperina.espacio().shouldBe(4.0)
         }
     }
-    //ETAPA 3
+
     describe("parcelas") {
         val soja1 = Soja(2009, 1.1)
         val soja2 = Soja(2009, 1.2)
