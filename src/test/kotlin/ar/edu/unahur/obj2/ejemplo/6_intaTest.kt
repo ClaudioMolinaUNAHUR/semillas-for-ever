@@ -1,6 +1,7 @@
 package ar.edu.unahur.obj2.ejemplo
 
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.doubles.plusOrMinus
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 
@@ -27,9 +28,9 @@ class IntaTest : DescribeSpec ({
     }
     describe ("promedioPlantasPorParcela") {
         it("promedio Parcela A B y C") {
-            inta.promedioPlantasPorParcela().shouldBe(4.33)
+            inta.promedioPlantasPorParcela().shouldBe(4.33 plusOrMinus 0.01)
             parcelaA.plantarSinCondicion(soja3)
-            inta.promedioPlantasPorParcela().shouldBe(4.67)
+            inta.promedioPlantasPorParcela().shouldBe(4.67 plusOrMinus 0.01)
         }
     }
 })
