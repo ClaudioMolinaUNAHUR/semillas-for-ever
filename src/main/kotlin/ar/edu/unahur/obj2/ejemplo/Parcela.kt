@@ -7,7 +7,7 @@ open class Parcela(var ancho: Double, var largo: Double, val horasDeSol: Int, va
 
     fun cantMaxDePlantas() = ceil(if(ancho > largo) {superficie()/5} else {superficie()/3 + largo})
 
-    fun cantDePlantasEnParcela() = listaDePlantas.size
+    fun cantDePlantasEnParcela() = listaDePlantas.size.toDouble()
 
     fun plantarSinCondicion(unaPlanta: Planta) = listaDePlantas.add(unaPlanta)
 
@@ -24,12 +24,15 @@ open class Parcela(var ancho: Double, var largo: Double, val horasDeSol: Int, va
 
     fun tieneComplicaciones() = listaDePlantas.any{ it.horasDeSolToleradas() > horasDeSol}
 
+    open fun seAsociaBienA(unaPlanta: Planta) = false
+
+    fun porcentajeBienAsociada() = listaDePlantas.count{n ->this.seAsociaBienA(n)} / listaDePlantas.size * 100.0
 
 }
 class ParcelaEcologica(ancho: Double, largo: Double, horasDeSol: Int, listaDePlantas: MutableList<Planta>) : Parcela(ancho, largo,horasDeSol,listaDePlantas){
-     fun seAsociaBienA(unaPlanta: Planta) = !tieneComplicaciones() && unaPlanta.esIdeal(this)
+     override fun seAsociaBienA(unaPlanta: Planta) = !tieneComplicaciones() && unaPlanta.esIdeal(this)
 }
 
 class ParcelaIndustrial(ancho: Double, largo: Double, horasDeSol: Int, listaDePlantas: MutableList<Planta>) : Parcela(ancho, largo,horasDeSol,listaDePlantas){
-    fun seAsociaBienA(unaPlanta: Planta) = listaDePlantas.size < 2 && unaPlanta.esFuerte()
+    override fun seAsociaBienA(unaPlanta: Planta) = listaDePlantas.size < 2 && unaPlanta.esFuerte()
 }

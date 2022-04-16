@@ -28,7 +28,7 @@ class ParcelasTest : DescribeSpec ({
         it("no tiene complicaciones") {
             parcelaA.tieneComplicaciones().shouldBeTrue()
         }
-        it("no puede plantar ya que alcanso su maximo") {
+        it("no puede plantar ya que alcanzo su maximo") {
             shouldThrowMessage("NO CUMPLE LA CONDICION PARA PLANTAR"){parcelaA.plantarUnaPlanta(soja5)}
         }
     }
