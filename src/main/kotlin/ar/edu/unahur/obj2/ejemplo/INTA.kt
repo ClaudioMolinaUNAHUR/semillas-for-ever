@@ -5,10 +5,15 @@ import java.math.RoundingMode
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
-class INTA(var parcelas : MutableCollection<Parcela>) {
+object INTA {
+    lateinit var parcelas : MutableSet<Parcela>
     fun promedioPlantasPorParcela() : Double {
-        return parcelas.sumByDouble{ it.cantDePlantasEnParcela() } / parcelas.size.toDouble()
+        return (if(parcelas.size > 0) {
+                    parcelas.sumByDouble { it.cantDePlantasEnParcela() } / parcelas.size.toDouble()
+                }else{
+                    0.0
+                })
     }
     fun masSustentable() = parcelasSustentables().find{ c -> c.porcentajeBienAsociada() == parcelasSustentables().maxOf{c.porcentajeBienAsociada()}}
-    fun parcelasSustentables() = parcelas.filter{ it.cantDePlantasEnParcela() >= 4 }
+    fun parcelasSustentables() = parcelas.filter{ it.cantDePlantasEnParcela() > 4 }
 }

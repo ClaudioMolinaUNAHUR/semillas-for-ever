@@ -26,7 +26,10 @@ open class Parcela(var ancho: Double, var largo: Double, val horasDeSol: Int, va
 
     open fun seAsociaBienA(unaPlanta: Planta) = false
 
-    fun porcentajeBienAsociada() = listaDePlantas.count{n ->this.seAsociaBienA(n)} / listaDePlantas.size * 100.0
+    fun porcentajeBienAsociada(): Double {
+        if(listaDePlantas.size  == 0) return 0.0
+        return listaDePlantas.count{n ->this.seAsociaBienA(n)} / listaDePlantas.size * 100.0
+    }
 
 }
 class ParcelaEcologica(ancho: Double, largo: Double, horasDeSol: Int, listaDePlantas: MutableList<Planta>) : Parcela(ancho, largo,horasDeSol,listaDePlantas){
