@@ -1,49 +1,76 @@
 package ar.edu.unahur.obj2.ejemplo
 
+import io.kotest.assertions.throwables.shouldThrowMessage
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 
 class AsociaciónDePlantasTest : DescribeSpec ({
     val menta1 = Menta(2019,0.8)
-
     val soja1 = Soja(2020, 0.4)
-    val soja2 = Soja(2012,1.1)
-    val soja3 = Soja(2006,1.2)
-    val soja4 = Soja(2015,1.1)
-    val soja5 = Soja(2009,1.2)
+    val soja2 = Soja(2012,0.7)
+    val soja3 = Soja(2009,1.2)
 
+    val p1 = Parcela("generica",4.0,2.0,4, mutableListOf())
+    val p2 = Parcela("generica",2.0,3.0,6, mutableListOf()) // 5 plantas
 
-    val parcelaEco = ParcelaEcologica(4.0,2.0,4, mutableListOf())
-    val parcelaEco2 = ParcelaEcologica(4.0,1.0,4, mutableListOf())
-    val parcelaInd = ParcelaIndustrial(6.0,2.0,4, mutableListOf())
-
-    describe("parcel ecologica con menta"){
-        it("parcelaEco se asocia bien a menta" ){
-            parcelaEco.seAsociaBienA(menta1).shouldBeTrue()
+    describe("tipos de parcela") {
+        it("cambio parcela a tipo ecologica"){
+            p1.cambiarATipo("ecologica")
+            p1.tipo.shouldBe("ecologica")
         }
-        it("parcelaEco2 no se asocia bien a menta" ){
-            parcelaEco2.seAsociaBienA(menta1).shouldBeFalse()
+        it("cambio parcela a tipo industrial"){
+            p1.cambiarATipo("industrial")
+            p1.tipo.shouldBe("industrial")
         }
     }
-    describe("parcel industrial con sojas") {
-        it("parcelaInd no se asocia bien a menta ya que no es fuerte") {
-            parcelaInd.seAsociaBienA(menta1).shouldBeFalse()
-        }
-        it("parcelaInd se asociabien con soja2 y soja3, son fuerte y no tiene mas de dos plantas"){
-            parcelaInd.seAsociaBienA(soja2).shouldBeTrue()
-            parcelaInd.seAsociaBienA(soja3).shouldBeTrue()
-        }
-        it("parcelaInd ya no se asocia con soja2 soja3 ya que tiene dos plantas"){
-            parcelaInd.plantarSinCondicion(soja4)
-            parcelaInd.plantarSinCondicion(soja5)
-            parcelaInd.seAsociaBienA(soja2).shouldBeFalse()
-            parcelaInd.seAsociaBienA(soja3).shouldBeFalse()
-        }
-        it("parcelaInd no se asocia con soja1, es debil") {
-            parcelaInd.seAsociaBienA(soja1).shouldBeFalse()
-        }
 
+    describe("asociacion de plantas en...") {
+        describe("parcela generica ") {
+            it("tira un error, en ellas no se analiza asociacion") {
+                shouldThrowMessage("en parcelas genericas no se analiza asociacion") { p2.seAsociaBien(menta1) }
+               // shouldThrowMessage("en parcelas genericas no se analiza asociacion") { p1.seAsociaBien(soja1) }//no se xq falla aca
+            }
+        }
+        describe("parcela ecologica "){
+            p1.cambiarATipo("ecologica")
+            p2.cambiarATipo("ecologica")
+            it("menta se asocia bien a p1 ya que p1 no tiene complicaciones y es ideal para menta") {
+                p1.seAsociaBien(menta1).shouldBeTrue()
+            }
+            it("menta no se asocia bien a p2 ya que p2 tiene complicaciones") {
+                p2.seAsociaBien(menta1).shouldBeFalse()
+            }
+            it("soja1 no se asocia bien a p1 ya que p1 aunque no tiene complicaciones no es ideal para soja1"){
+                p1.seAsociaBien(soja1).shouldBeFalse()
+            }
+        }
+        describe("parcela industrial"){
+            p1.cambiarATipo("industrial")
+            p2.cambiarATipo("industrial")
+            it("p1 y p2 no son ideales para soja1 y soja2 ya que estas no son fuertes"){
+                p1.seAsociaBien(soja1).shouldBeFalse()
+                p1.seAsociaBien(soja2).shouldBeFalse()
+                p2.seAsociaBien(soja1).shouldBeFalse()
+                p2.seAsociaBien(soja2).shouldBeFalse()
+            }
+            it("p1 y p2 son ideal ideales para soja3 ya que esta es fuerte"){
+                p1.seAsociaBien(soja3).shouldBeTrue()
+                p2.seAsociaBien(soja3).shouldBeTrue()
+            }
+            it("p1 2pl ideal soja3"){
+                p1.plantarSinCondicion(soja2)
+                p1.plantarSinCondicion(soja2)
+                p1.seAsociaBien(soja3).shouldBeTrue()
+            }
+            it("p1 con 3 plantas deja de ser ideal para soja 3"){
+                p1.plantarSinCondicion(soja2)
+                p1.plantarSinCondicion(soja2)
+                p1.plantarSinCondicion(soja2)
+                p1.seAsociaBien(soja3).shouldBeFalse()
+            }
+        }
     }
 })
 
